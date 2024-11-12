@@ -1,5 +1,7 @@
 <?php
 
+const class_version = "1.0.1";
+
 if( PHP_OS_FAMILY == "Linux" ){
 	define("n","\n");define("d","\033[0m");define("m","\033[1;31m");define("h","\033[1;32m");define("k","\033[1;33m");define("b","\033[1;34m");define("u","\033[1;35m");define("c","\033[1;36m");define("p","\033[1;37m");define("mp","\033[101m\033[1;37m");define("hp","\033[102m\033[1;30m");define("kp","\033[103m\033[1;37m");define("bp","\033[104m\033[1;37m");define("up","\033[105m\033[1;37m");define("cp","\033[106m\033[1;37m");define("pm","\033[107m\033[1;31m");define("ph","\033[107m\033[1;32m");define("pk","\033[107m\033[1;33m");define("pb","\033[107m\033[1;34m");define("pu","\033[107m\033[1;35m");define("pc","\033[107m\033[1;36m");
 }else{
@@ -21,13 +23,14 @@ Class Requests {
 class Display {
 	static function Clear(){if( PHP_OS_FAMILY == "Linux" ){system('clear');}else{pclose(popen('cls','w'));}} 
 	static function Menu($no, $title){print h."---[".p."$no".h."] ".k."$title\n";}
+	static function Cetak($label, $msg = "[No Content]"){$len = 9;$lenstr = $len-strlen($label);print h."[".p.$label.h.str_repeat(" ",$lenstr)."]─> ".p.$msg.n;}
+	static function Title($activitas){print bp.str_pad(strtoupper($activitas),44, " ", STR_PAD_BOTH).d.n;}
+	static function Line(){print c.str_repeat('─',44).n;}
+	static function Ban($title, $versi){self::Clear();print "Script by iewil\n";print strtoupper($title." [".$versi."]").n;print self::Line();}
+	
 	static function Error($except){return m."---[".p."!".m."] ".p.$except;}
 	static function Sukses($msg){return h."---[".p."✓".h."] ".p.$msg.n;}
-	static function Cetak($label, $msg = "[No Content]"){$len = 9;$lenstr = $len-strlen($label);print h."[".p.$label.h.str_repeat(" ",$lenstr)."]─> ".p.$msg.n;}
 	static function Isi($msg){return m."╭[".p."Input ".$msg.m."]".n.m."╰> ".h;}
-	static function Title($activitas){print bp.str_pad(strtoupper($activitas),44, " ", STR_PAD_BOTH).d.n;}
-	static function Line(){return c.str_repeat('─',44).n;}
-	static function Ban($title, $versi){self::Clear();print "Script by iewil\n";print strtoupper($title." [".$versi."]").n;print self::Line();}
 }
 
 class Functions {
