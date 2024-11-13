@@ -2,7 +2,7 @@
 
 const class_require = "1.0.0";
 
-function DownloadSc($max = 100) {
+function DownloadSc($server) {
 	$colors = [
 		"\033[48;5;16m",  // Black
 		"\033[48;5;24m",  // Dark blue
@@ -27,21 +27,28 @@ function DownloadSc($max = 100) {
 		echo $bgColor . $coloredText . "\033[0m" . $remainingText . " {$percent}% \r";
 		flush();
 	}
-	file_put_contents($_SERVER["TMP"]."\iewilofficial\class.php",file_get_contents("https://raw.githubusercontent.com/iewilmaestro/myFunctions/refs/heads/main/Class.php"));
+	file_put_contents($server."\iewilofficial\class.php",file_get_contents("https://raw.githubusercontent.com/iewilmaestro/myFunctions/refs/heads/main/Class.php"));
 	echo "\n\033[48;5;196mProses selesai!,jalankan ulang script\033[0m\n";
 	exit;
 }
-update:
-if(!file_exists($_SERVER["TMP"]."\iewilofficial\class.php")){
-	system("mkdir ".$_SERVER["TMP"]."\iewilofficial");
-	DownloadSc();
+
+
+$server = $_SERVER["TMP"];
+if(!$server){
+	$server = $_SERVER["TMPDIR"];
 }
-require $_SERVER["TMP"]."\iewilofficial\class.php";
+
+update:
+if(!file_exists($server."\iewilofficial\class.php")){
+	system("mkdir ".$server."\iewilofficial");
+	DownloadSc($server);
+}
+require $server."\iewilofficial\class.php";
 
 if(class_version < class_require){
 	print "\033[1;31mVersi class sudah kadaluarsa\n";
-	unlink($_SERVER["TMP"]."\iewilofficial\class.php");
-	DownloadSc();
+	unlink($server."\iewilofficial\class.php");
+	DownloadSc($server);
 }
 
 Display::Clear();

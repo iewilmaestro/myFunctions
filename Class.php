@@ -1,6 +1,6 @@
 <?php
 
-const class_version = "1.0.0";
+const class_version = "1.0.1";
 
 // Warna teks
 const n = "\n";          // Baris baru
@@ -69,6 +69,9 @@ class Display {
 	static function Error($except){return m."---[".p."!".m."] ".p.$except;}
 	static function Sukses($msg){return h."---[".p."✓".h."] ".p.$msg.n;}
 	static function Isi($msg){return m."╭[".p."Input ".$msg.m."]".n.m."╰> ".h;}
+	static function Offline(){
+		
+	}
 }
 
 class Functions {
@@ -119,7 +122,7 @@ class Captcha {
 		if(Functions::getConfig("type") == 1){
             $this->url = 'http://api.multibot.in/';
 			Display::Cetak("Register","http://api.multibot.in");
-			$this->key = Functions::getConfig("multibot_apikey");
+			$this->key = Functions::setConfig("multibot_apikey");
 			$this->provider = Functions::HiddenConfig("provider", "Multibot");
         }
         else{
