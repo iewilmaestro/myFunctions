@@ -98,7 +98,7 @@ class HtmlScrap {
 	private function getInput($html){$form = explode('<form', $html)[1];$scrap = $this->scrap($this->input, $form);for($i = 0; $i < count($scrap[1]); $i++){$data[$scrap[1][$i]] = $scrap[2][$i];}return $data;}
 	public function Result($html)
 	{
-		$data['cloundflare']=(preg_match('/Just a moment.../',$html))? true:false;
+		$data['cloudflare']=(preg_match('/Just a moment.../',$html))? true:false;
 		$data['firewall'] =(preg_match('/Firewall/',$html))? true:false;
 		$data['locked'] = (preg_match('/Locked/',$html))? true:false;
 		$data["captcha"] = $this->getCaptcha($html);
