@@ -1,6 +1,6 @@
 <?php
 
-const class_version = "1.0.2";
+const class_version = "1.0.3";
 
 // Warna teks
 const n = "\n";          // Baris baru
@@ -148,4 +148,86 @@ class Captcha {
 	public function Teaserfast($main, $small){if($this->provider == "Multibot"){return ["error"=> true, "msg" => "not support key!"];}$data = http_build_query(["method" => "teaserfast","main_photo" => $main,"task" => $small]);$ua = "Content-type: application/x-www-form-urlencoded";return $this->getResult($data, "POST",$ua);}
 }
 
+class Iewil {
+	
+	protected $url;
+	protected $apikey;
+	
+	function __construct(){
+		$this->url = "https://api-iewil.my.id/";
+		$this->apikey = "65e5291b1ecaaa471aa1321c5de9e4df";
+	}
+	private function requests($postParameter){
+		$ch = curl_init($this->url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postParameter);
+		$response = curl_exec($ch);
+		if(!curl_errno($ch)) {
+			switch ($http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE)) {
+				case 200:  # OK
+					break;
+				default:
+					return '{"status":0, "message":"iewilbot HTTP code "'.$http_code.'}';
+			}
+		}
+		curl_close($ch);
+		return $response;
+	}
+	private function getResult($postParameter){
+		$r = json_decode($this->requests($postParameter),1);
+		if($r && $r['status'])return $r['result'];
+		if($r["message"])print Display::Error($r["message"].n);
+		if(!$r)print Display::Error("captcha cannot be solve".n);
+	}
+	public function Turnstile( $sitekey, $pageurl){
+		$postParameter = http_build_query([
+			"pageurl"	=> $pageurl,
+			"sitekey"	=> $sitekey,
+			"method"	=> "turnstile",
+			"apikey"	=> $this->apikey
+		]);
+		return $this->getResult($postParameter);
+	}
+	public function gp($src){
+		$postParameter = http_build_query([
+			"main"		=> base64_encode($src),
+			"method"	=> "gp",
+			"apikey"	=> $this->apikey
+		]);
+		return $this->getResult($postParameter);
+	}
+	
+	public function altcha($signature, $salt, $challenge){
+		$postParameter = http_build_query([
+			"signature"	=> $signature,
+			"salt"		=> $salt,
+			"challenge"	=> $challenge,
+			"method"	=> "altcha",
+			"apikey"	=> $this->apikey
+		]);
+		return $this->getResult($postParameter);
+	}
+	
+	public function Antibot($source){
+		$data["apikey"] = $this->apikey;
+		$data["method"] = "antibot";
+		
+		$main = explode('"',explode('src="',explode('Bot links',$source)[1])[1])[0];
+		$data["main"] 	= $main;
+		$src = explode('rel=\"',$source);
+		foreach($src as $x => $sour){
+			if($x == 0)continue;
+			$no = explode('\"',$sour)[0];
+			$img = explode('\"',explode('src=\"',$sour)[1])[0];
+			$data[$no] = $img;
+		}
+		$postParameter = http_build_query($data);
+		$res = $this->getResult($postParameter);
+		if(isset($res["solution"])){
+			$cap = $res["solution"];
+			return "+".str_replace(",","+",$cap);
+		}
+	}
+}
 ?>

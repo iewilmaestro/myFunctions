@@ -54,3 +54,5 @@ if(class_version < class_require){
 Display::Clear();
 print Display::Line();
 Display::Ban("Autofaucet", "1.0.0");
+
+
