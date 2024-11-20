@@ -153,9 +153,9 @@ class Iewil {
 	protected $url;
 	protected $apikey;
 	
-	function __construct(){
+	function __construct($apikey){
 		$this->url = "https://api-iewil.my.id/";
-		$this->apikey = "65e5291b1ecaaa471aa1321c5de9e4df";
+		$this->apikey = $apikey;
 	}
 	private function requests($postParameter){
 		$ch = curl_init($this->url);

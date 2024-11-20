@@ -2,7 +2,10 @@
 
 require "../Class.php";
 
-$iewil = new Iewil();
+//register free apikey https://api-iewil.my.id/ 
+$apikey = "YOUR APIKEY";
+
+$iewil = new Iewil($apikey);
 Display::Clear();
 
 // TES ANTIBOT
