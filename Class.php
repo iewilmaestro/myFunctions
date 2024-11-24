@@ -1,6 +1,6 @@
 <?php
 
-const class_version = "1.0.3";
+const class_version = "1.0.4";
 
 // Warna teks
 const n = "\n";          // Baris baru
@@ -95,14 +95,14 @@ class HtmlScrap {
 	}
 	private function scrap($pattern, $html){preg_match_all($pattern, $html, $matches);return $matches;}
 	private function getCaptcha($html){$scrap = $this->scrap($this->captcha, $html);for($i = 0; $i < count($scrap[1]); $i++){$data[$scrap[1][$i]] = $scrap[2][$i];}return $data;}
-	private function getInput($html){$form = explode('<form', $html)[1];$scrap = $this->scrap($this->input, $form);for($i = 0; $i < count($scrap[1]); $i++){$data[$scrap[1][$i]] = $scrap[2][$i];}return $data;}
-	public function Result($html)
+	private function getInput($html, $form = 1){$form = explode('<form', $html)[$form];$scrap = $this->scrap($this->input, $form);for($i = 0; $i < count($scrap[1]); $i++){$data[$scrap[1][$i]] = $scrap[2][$i];}return $data;}
+	public function Result($html, $form = 1)
 	{
 		$data['cloudflare']=(preg_match('/Just a moment.../',$html))? true:false;
 		$data['firewall'] =(preg_match('/Firewall/',$html))? true:false;
 		$data['locked'] = (preg_match('/Locked/',$html))? true:false;
 		$data["captcha"] = $this->getCaptcha($html);
-		$data["input"] = $this->getInput($html);
+		$data["input"] = $this->getInput($html, $form);
 		$data["faucet"] = $this->scrap($this->limit, $html);
 		return $data;
 	}
