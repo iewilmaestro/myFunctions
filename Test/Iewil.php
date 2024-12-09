@@ -1,6 +1,6 @@
 <?php
 
-require "../Class.php";
+require "../Obf.php";
 
 //register free apikey https://api-iewil.my.id/ 
 $apikey = "YOUR APIKEY";
