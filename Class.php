@@ -1,6 +1,6 @@
 <?php
 
-const class_version = "1.0.7";
+const class_version = "1.0.8";
 
 // Warna teks
 const n = "\n";          // Baris baru
@@ -81,7 +81,7 @@ class Display {
 		print p." Special Tanks to \n";
 		print str_pad("@PetapaGenit2, @Zhy_08, @IPeop", 44, " ", STR_PAD_BOTH).n;
 		print str_pad("@itsaoda, @pr4bu_51l1w4n61, @MetalFrogs", 44, " ", STR_PAD_BOTH).n;
-		print mp.str_pad("FREE SCRIPT NOT FOR SALE", 44, " ", STR_PAD_BOTH).d.n;
+		print mp.str_pad("FREE SCRIPT NOT FOR SALE", 44, " ", STR_PAD_BOTH).d.n.n;
 	}
 	static function ipApi(){
 		$r = json_decode(file_get_contents("http://ip-api.com/json"));
