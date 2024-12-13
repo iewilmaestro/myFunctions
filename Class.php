@@ -1,6 +1,6 @@
 <?php
 
-const class_version = "1.0.8";
+const class_version = "1.0.9";
 
 // Warna teks
 const n = "\n";          // Baris baru
@@ -54,8 +54,8 @@ Class Requests {
 	static function post($url, $head=0, $data_post=0){return self::curl($url,$head, 1, $data_post);}
 	static function getXskip($url, $head =0){return self::curl($url,$head,'','','','',1);}
 	static function postXskip($url, $head=0, $data_post=0){return self::curl($url,$head, 1, $data_post,'','',1);}
-	static function getXcookie($url, $head=0){return self::curl($url,$head,'','',1);}
-	static function postXcookie($url, $head=0, $data_post=0){return self::curl($url,$head,1,$data_post,1);}
+	static function getXcookie($url, $head=0, $cookie=0){if(!$cookie){$cookie ="cookie.txt";}return self::curl($url,$head,'','',$cookie);}
+	static function postXcookie($url, $head=0, $data_post=0, $cookie=0){if(!$cookie){$cookie ="cookie.txt";}return self::curl($url,$head,1,$data_post,$cookie);}
 	static function getXproxy($url, $head=0, $proxy){return self::curl($url,$head,'','',1,$proxy);}
 	static function postXproxy($url, $head=0, $data_post, $proxy){return self::curl($url,$head,1,$data_post,1,$proxy);}
 }
