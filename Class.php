@@ -1,6 +1,6 @@
 <?php
 
-const class_version = "1.0.9";
+const class_version = "1.1.0";
 
 // Warna teks
 const n = "\n";          // Baris baru
@@ -48,6 +48,24 @@ const bg_p1 = "\033[48;5;13m";   // Latar belakang ungu terang
 const bg_c1 = "\033[48;5;51m";   // Latar belakang cyan terang
 const bg_gr = "\033[48;5;240m";  // Latar belakang abu-abu gelap
 
+const LIST_YOUTUBE = [
+	"https://youtu.be/Va6rmuxMW-Y",
+	"https://youtu.be/vbwXQv1zy-w",
+	"https://youtu.be/qU-gi7NcpRk",
+	"https://youtu.be/xxbE94iI3a0",
+	"https://youtu.be/wWsHFa8ZhpQ",
+	"https://youtu.be/JATnrFZc3ws",
+	"https://youtu.be/GZmpDVC7AzY",
+	"https://youtu.be/lf1IpmCBGKU",
+	"https://youtu.be/ZWBJ7unGjm8",
+	"https://youtu.be/NlFhmw3DVvc",
+	"https://youtu.be/a8PLbkNoj0E",
+	"https://youtu.be/uCFB9J14GrI",
+	"https://youtu.be/YnvE9JSoi-k",
+	"https://youtu.be/XX4kVx-80Vw",
+	"https://youtu.be/wfczg8pS9AA"
+];
+
 Class Requests {
 	static function Curl($url, $head=0, $post=0, $data_post=0, $cookie=0, $proxy=0, $skip=0){while(true){$ch = curl_init();curl_setopt($ch, CURLOPT_URL, $url);curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);curl_setopt($ch, CURLOPT_COOKIE,TRUE);if($cookie){curl_setopt($ch, CURLOPT_COOKIEFILE,$cookie);curl_setopt($ch, CURLOPT_COOKIEJAR,$cookie);}if($post) {curl_setopt($ch, CURLOPT_POST, true);}if($data_post) {curl_setopt($ch, CURLOPT_POSTFIELDS, $data_post);}if($head) {curl_setopt($ch, CURLOPT_HTTPHEADER, $head);}if($proxy){curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, true);curl_setopt($ch, CURLOPT_PROXY, $proxy);}curl_setopt($ch, CURLOPT_HEADER, true);$r = curl_exec($ch);if($skip){return;}$c = curl_getinfo($ch);if(!$c) return "Curl Error : ".curl_error($ch); else{$head = substr($r, 0, curl_getinfo($ch, CURLINFO_HEADER_SIZE));$body = substr($r, curl_getinfo($ch, CURLINFO_HEADER_SIZE));curl_close($ch);if(!$body){print "Check your Connection!";sleep(2);print "\r                         \r";continue;}return array($head,$body);}}}
 	static function get($url, $head =0){return self::curl($url,$head);}
@@ -66,7 +84,7 @@ class Display {
 	static function Cetak($label, $msg = "[No Content]"){$len = 9;$lenstr = $len-strlen($label);print h."[".p.$label.h.str_repeat(" ",$lenstr)."]─> ".p.$msg.n;}
 	static function Title($activitas){print bp.str_pad(strtoupper($activitas),44, " ", STR_PAD_BOTH).d.n;}
 	static function Line($len = 44){print c.str_repeat('─',$len).n;}
-	static function Ban($title, $versi){
+	static function Ban($title, $versi, $server = 0){
 		$api = self::ipApi();
 		self::Clear();
 		if($api){
@@ -76,12 +94,28 @@ class Display {
 		print yh.' '.date("l").'           '.date("d/M/Y").'         '.date("H:i").' '.d."\n";
 		print " ".strtoupper($title." [".$versi."]").n;
 		print o2." •     •┓  ┏━┓┓┏  Author : @fat9ght\n";
-		print o." ┓┏┓┓┏┏┓┃  ┃┗┛┗┫╋ Youtube: youtube.com@iewil\n";
+		print o." ┓┏┓┓┏┏┓┃  ┃┗┛┗┫╋ Youtube: youtube.com/@iewil\n";
 		print y." ┗┗ ┗┻┛┗┗  ┗━┛┗┛┗ Tele   : t.me/MaksaJoin\n\n";
 		print p." Special Tanks to \n";
 		print str_pad("@PetapaGenit2, @Zhy_08, @IPeop", 44, " ", STR_PAD_BOTH).n;
 		print str_pad("@itsaoda, @pr4bu_51l1w4n61, @MetalFrogs", 44, " ", STR_PAD_BOTH).n;
 		print mp.str_pad("FREE SCRIPT NOT FOR SALE", 44, " ", STR_PAD_BOTH).d.n.n;
+		if($server){
+			$cekServer = Functions::Server(title);
+			if($cekServer['data']['status'] != "online"){
+				self::Line();
+				print Display::Error("Status Script is offline\n");
+				exit;
+			}
+			$update = ($cekServer['data']['version'] == versi)?false:true;
+			if($update > null){
+				print m."---[".p."^".m."]".h." Update sc Detect\n";
+				print m."---[".p."version ".m."] ".p.$cekServer['data']['version'].n;
+				print m."---[".p."download".m."] ".p.$cekServer['data']['link'].n;
+				self::Line();
+				exit;
+			}
+		}
 	}
 	static function ipApi(){
 		$r = json_decode(file_get_contents("http://ip-api.com/json"));
@@ -280,6 +314,24 @@ class Iewil {
 			$cap = $res["solution"];
 			return "+".str_replace(",","+",$cap);
 		}
+	}
+}
+class FreeCaptcha {
+	static function Icon($header){
+		$data["apikey"] = "iewil";
+		$data["methode"] = "icon";
+		$head = array_merge($header, ["X-Requested-With: XMLHttpRequest"]);
+		$getCap = json_decode(Requests::post(host.'system/libs/captcha/request.php',$head,"cID=0&rT=1&tM=light")[1],1);
+		
+		$head2 = array_merge($header, ["accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8"]);
+		foreach($getCap as $c){
+			$data[$c] = base64_encode(Requests::get(host.'system/libs/captcha/request.php?cid=0&hash='.$c, $head2)[1]);
+		}
+		$data = http_build_query($data);
+		$cap = json_decode(Requests::post("https://iewilbot.my.id/res.php",0,$data)[1],1);
+		if(!$cap['status'])return 0;
+		Requests::postXskip(host.'system/libs/captcha/request.php',$head,"cID=0&pC=".$cap['result']."&rT=2");
+		return $cap['result'];
 	}
 }
 ?>
