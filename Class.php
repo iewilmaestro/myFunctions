@@ -1,6 +1,6 @@
 <?php
 
-const class_version = "1.1.0";
+const class_version = "1.1.1";
 
 // Warna teks
 const n = "\n";          // Baris baru
@@ -262,9 +262,19 @@ class Iewil {
 	}
 	private function getResult($postParameter){
 		$r = json_decode($this->requests($postParameter),1);
-		if($r && $r['status'])return $r['result'];
-		//if($r["message"])print Display::Error($r["message"].n);
-		//if(!$r)print Display::Error("captcha cannot be solve".n);
+		if($r && $r['status']){
+			return $r['result'];
+		}
+		if($r["msg"]){
+			print substr($r["msg"],0,30);
+			sleep(2);
+			print "\r                                   \r";
+		}
+		if(!$r){
+			print "captcha cannot be solve";
+			sleep(2);
+			print "\r                                   \r";
+		}
 	}
 	public function Turnstile( $sitekey, $pageurl){
 		$postParameter = http_build_query([
@@ -310,9 +320,18 @@ class Iewil {
 		}
 		$postParameter = http_build_query($data);
 		$res = $this->getResult($postParameter);
+		unset($data["apikey"]);
+		unset($data["method"]);
+		unset($data["main"]);
 		if(isset($res["solution"])){
 			$cap = $res["solution"];
-			return "+".str_replace(",","+",$cap);
+			$cek = explode(",", $cap);
+			for($i=0;$i<count($data);$i++){
+				if(!$cek[$i]){
+					return;
+				}
+			}
+			return " ".str_replace(","," ",$cap);
 		}
 	}
 }
@@ -334,4 +353,5 @@ class FreeCaptcha {
 		return $cap['result'];
 	}
 }
+
 ?>
