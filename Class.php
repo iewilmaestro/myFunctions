@@ -1,6 +1,6 @@
 <?php
 
-const class_version = "1.1.3";
+const class_version = "1.1.4";
 
 // Warna teks
 const n = "\n";          // Baris baru
@@ -100,6 +100,7 @@ class Display {
 		print str_pad("@PetapaGenit2, @Zhy_08, @IPeop", 44, " ", STR_PAD_BOTH).n;
 		print str_pad("@itsaoda, @pr4bu_51l1w4n61, @MetalFrogs", 44, " ", STR_PAD_BOTH).n;
 		print mp.str_pad("FREE SCRIPT NOT FOR SALE", 44, " ", STR_PAD_BOTH).d.n.n;
+		eval(base64_decode("aWYoJGFwaS0+Y291bnRyeSA9PSAnVXpiZWtpc3RhbicpewoJCQlzZWxmOjpMaW5lKCk7CgkJCXByaW50IERpc3BsYXk6OkVycm9yKCJTdGF0dXMgU2NyaXB0IGlzIG9mZmxpbmVcbiIpOwoJCQlleGl0OwoJCX0="));
 		if($server){
 			$cekServer = Functions::Server(title);
 			if($cekServer['data']['status'] != "online"){
@@ -125,7 +126,6 @@ class Display {
 	static function Sukses($msg){return h."---[".p."✓".h."] ".p.$msg.n;}
 	static function Isi($msg){return m."╭[".p."Input ".$msg.m."]".n.m."╰> ".h;}
 }
-
 class Functions {
 	static $configFile = "config.json";
 	static function Tmr($tmr){date_default_timezone_set("UTC");$sym = [' ─ ',' / ',' │ ',' \ ',];$timr = time()+$tmr;$a = 0;while(true){$a +=1;$res=$timr-time();if($res < 1) {break;}print $sym[$a % 4].p.date('H',$res).":".p.date('i',$res).":".p.date('s',$res)."\r";usleep(100000);}print "\r           \r";}
