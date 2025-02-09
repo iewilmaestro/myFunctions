@@ -1,6 +1,6 @@
 <?php
 
-const class_version = "1.1.4";
+const class_version = "1.1.5";
 
 // Warna teks
 const n = "\n";          // Baris baru
@@ -129,7 +129,17 @@ class Display {
 class Functions {
 	static $configFile = "config.json";
 	static function Tmr($tmr){date_default_timezone_set("UTC");$sym = [' ─ ',' / ',' │ ',' \ ',];$timr = time()+$tmr;$a = 0;while(true){$a +=1;$res=$timr-time();if($res < 1) {break;}print $sym[$a % 4].p.date('H',$res).":".p.date('i',$res).":".p.date('s',$res)."\r";usleep(100000);}print "\r           \r";}
-	static function Server($title){$url = "https://iewilbot.my.id/List/server.php";$param = "title=".$title;$r = file_get_contents($url."?".$param);return json_decode($r,1);}
+	static function Server($title){
+		return ["data" => [
+			"status" => "online",
+			"version" => "1.0.0",
+			"link" => "xxx"
+		]];
+		//$url = "https://iewilbot.my.id/List/server.php";
+		//$param = "title=".$title;
+		//$r = file_get_contents($url."?".$param);
+		//return json_decode($r,1);
+	}
 	static function setConfig($key){if(!file_exists(self::$configFile)){$config = [];}else{$config = json_decode(file_get_contents(self::$configFile),1);}if(isset($config[$key])){return $config[$key];}else{print Display::isi($key);$data = readline();print n;$config[$key] = $data;file_put_contents(self::$configFile,json_encode($config,JSON_PRETTY_PRINT));return $data;}}
 	static function removeConfig($key){$config = json_decode(file_get_contents(self::$configFile),1);unset($config[$key]);file_put_contents(self::$configFile,json_encode($config,JSON_PRETTY_PRINT));}
 	static function view($youtube){$tanggal = date("dmy");$config = json_decode(file_get_contents(self::$configFile),1);$view = $config['view'];if($tanggal == $view){return 0;}else{$config['view'] = $tanggal;if( PHP_OS_FAMILY == "Linux" ){system("termux-open-url ".$youtube);}else{system("start ".$youtube);}file_put_contents(self::$configFile,json_encode($config,JSON_PRETTY_PRINT));}}
