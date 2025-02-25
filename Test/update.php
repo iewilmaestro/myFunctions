@@ -27,7 +27,7 @@ function DownloadSc($server) {
 		echo $bgColor . $coloredText . "\033[0m" . $remainingText . " {$percent}% \r";
 		flush();
 	}
-	file_put_contents($server."\iewilofficial\class.php",file_get_contents("https://raw.githubusercontent.com/iewilmaestro/myFunctions/refs/heads/main/Class.php"));
+	file_put_contents($server."/iewilofficial/class.php",file_get_contents("https://raw.githubusercontent.com/iewilmaestro/myFunctions/refs/heads/main/Class.php"));
 	echo "\n\033[48;5;196mProses selesai!,jalankan ulang script\033[0m\n";
 	exit;
 }
@@ -39,15 +39,15 @@ if(!$server){
 }
 
 update:
-if(!file_exists($server."\iewilofficial\class.php")){
-	system("mkdir ".$server."\iewilofficial");
+if(!file_exists($server."/iewilofficial/class.php")){
+	system("mkdir ".$server."/iewilofficial");
 	DownloadSc($server);
 }
-require $server."\iewilofficial\class.php";
+require $server."/iewilofficial/class.php";
 
 if(class_version < class_require){
 	print "\033[1;31mVersi class sudah kadaluarsa\n";
-	unlink($server."\iewilofficial\class.php");
+	unlink($server."/iewilofficial/class.php");
 	DownloadSc($server);
 }
 

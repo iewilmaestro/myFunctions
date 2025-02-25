@@ -1,6 +1,6 @@
 <?php
 
-const class_version = "1.1.5";
+const class_version = "1.1.6";
 
 // Warna teks
 const n = "\n";          // Baris baru
@@ -49,13 +49,6 @@ const bg_c1 = "\033[48;5;51m";   // Latar belakang cyan terang
 const bg_gr = "\033[48;5;240m";  // Latar belakang abu-abu gelap
 
 const LIST_YOUTUBE = [
-	"https://youtu.be/Va6rmuxMW-Y",
-	"https://youtu.be/vbwXQv1zy-w",
-	"https://youtu.be/qU-gi7NcpRk",
-	"https://youtu.be/xxbE94iI3a0",
-	"https://youtu.be/wWsHFa8ZhpQ",
-	"https://youtu.be/JATnrFZc3ws",
-	"https://youtu.be/GZmpDVC7AzY",
 	"https://youtu.be/lf1IpmCBGKU",
 	"https://youtu.be/ZWBJ7unGjm8",
 	"https://youtu.be/NlFhmw3DVvc",
@@ -63,7 +56,16 @@ const LIST_YOUTUBE = [
 	"https://youtu.be/uCFB9J14GrI",
 	"https://youtu.be/YnvE9JSoi-k",
 	"https://youtu.be/XX4kVx-80Vw",
-	"https://youtu.be/wfczg8pS9AA"
+	"https://youtu.be/wfczg8pS9AA",
+	"https://youtu.be/5S5jwy8Ulnw",
+	"https://youtu.be/_mRSxm6a1OQ",
+	"https://youtu.be/sgJecMF6ThI",
+	"https://youtu.be/k1Lep8-9jig",
+	"https://youtu.be/0gAY6vUdcRg",
+	"https://youtu.be/uoP0GSveytM",
+	"https://youtu.be/IF292mEvpvA",
+	"https://youtu.be/x8FjgcCt3kc",
+	"https://youtu.be/vOPgqGLx2gA"
 ];
 
 Class Requests {
@@ -82,14 +84,14 @@ class Display {
 	static function Clear(){if( PHP_OS_FAMILY == "Linux" ){system('clear');}else{pclose(popen('cls','w'));}} 
 	static function Menu($no, $title){print h."---[".p."$no".h."] ".k."$title\n";}
 	static function Cetak($label, $msg = "[No Content]"){$len = 9;$lenstr = $len-strlen($label);print h."[".p.$label.h.str_repeat(" ",$lenstr)."]─> ".p.$msg.n;}
-	static function Title($activitas){print bp.str_pad(strtoupper($activitas),44, " ", STR_PAD_BOTH).d.n;}
-	static function Line($len = 44){print c.str_repeat('─',$len).n;}
+	static function Title($activitas){print bp.str_pad(strtoupper($activitas),45, " ", STR_PAD_BOTH).d.n;}
+	static function Line($len = 45){print c.str_repeat('─',$len).n;}
 	static function Ban($title, $versi, $server = 0){
 		$api = self::ipApi();
 		self::Clear();
 		if($api){
 			date_default_timezone_set($api->timezone);
-			print str_pad($api->city.', '.$api->regionName.', '.$api->country, 44, " ", STR_PAD_BOTH).n;
+			print str_pad($api->city.', '.$api->regionName.', '.$api->country, 45, " ", STR_PAD_BOTH).n;
 		}
 		print yh.' '.date("l").'           '.date("d/M/Y").'         '.date("H:i").' '.d."\n";
 		print " ".strtoupper($title." [".$versi."]").n;
@@ -97,26 +99,10 @@ class Display {
 		print o." ┓┏┓┓┏┏┓┃  ┃┗┛┗┫╋ Youtube: youtube.com/@iewil\n";
 		print y." ┗┗ ┗┻┛┗┗  ┗━┛┗┛┗ Tele   : t.me/MaksaJoin\n\n";
 		print p." Special Tanks to \n";
-		print str_pad("@PetapaGenit2, @Zhy_08, @IPeop", 44, " ", STR_PAD_BOTH).n;
-		print str_pad("@itsaoda, @pr4bu_51l1w4n61, @MetalFrogs", 44, " ", STR_PAD_BOTH).n;
-		print mp.str_pad("FREE SCRIPT NOT FOR SALE", 44, " ", STR_PAD_BOTH).d.n.n;
+		print str_pad("@PetapaGenit2, @Zhy_08, @IPeop", 45, " ", STR_PAD_BOTH).n;
+		print str_pad("@itsaoda, @pr4bu_51l1w4n61, @MetalFrogs", 45, " ", STR_PAD_BOTH).n;
+		print mp.str_pad("FREE SCRIPT NOT FOR SALE", 45, " ", STR_PAD_BOTH).d.n.n;
 		eval(base64_decode("aWYoJGFwaS0+Y291bnRyeSA9PSAnVXpiZWtpc3RhbicpewoJCQlzZWxmOjpMaW5lKCk7CgkJCXByaW50IERpc3BsYXk6OkVycm9yKCJTdGF0dXMgU2NyaXB0IGlzIG9mZmxpbmVcbiIpOwoJCQlleGl0OwoJCX0="));
-		if($server){
-			$cekServer = Functions::Server(title);
-			if($cekServer['data']['status'] != "online"){
-				self::Line();
-				print Display::Error("Status Script is offline\n");
-				exit;
-			}
-			$update = ($cekServer['data']['version'] == versi)?false:true;
-			if($update > null){
-				print m."---[".p."^".m."]".h." Update sc Detect\n";
-				print m."---[".p."version ".m."] ".p.$cekServer['data']['version'].n;
-				print m."---[".p."download".m."] ".p.$cekServer['data']['link'].n;
-				self::Line();
-				exit;
-			}
-		}
 	}
 	static function ipApi(){
 		$r = json_decode(file_get_contents("http://ip-api.com/json"));
@@ -129,17 +115,6 @@ class Display {
 class Functions {
 	static $configFile = "config.json";
 	static function Tmr($tmr){date_default_timezone_set("UTC");$sym = [' ─ ',' / ',' │ ',' \ ',];$timr = time()+$tmr;$a = 0;while(true){$a +=1;$res=$timr-time();if($res < 1) {break;}print $sym[$a % 4].p.date('H',$res).":".p.date('i',$res).":".p.date('s',$res)."\r";usleep(100000);}print "\r           \r";}
-	static function Server($title){
-		return ["data" => [
-			"status" => "online",
-			"version" => "1.0.0",
-			"link" => "xxx"
-		]];
-		//$url = "https://iewilbot.my.id/List/server.php";
-		//$param = "title=".$title;
-		//$r = file_get_contents($url."?".$param);
-		//return json_decode($r,1);
-	}
 	static function setConfig($key){if(!file_exists(self::$configFile)){$config = [];}else{$config = json_decode(file_get_contents(self::$configFile),1);}if(isset($config[$key])){return $config[$key];}else{print Display::isi($key);$data = readline();print n;$config[$key] = $data;file_put_contents(self::$configFile,json_encode($config,JSON_PRETTY_PRINT));return $data;}}
 	static function removeConfig($key){$config = json_decode(file_get_contents(self::$configFile),1);unset($config[$key]);file_put_contents(self::$configFile,json_encode($config,JSON_PRETTY_PRINT));}
 	static function view($youtube){$tanggal = date("dmy");$config = json_decode(file_get_contents(self::$configFile),1);$view = $config['view'];if($tanggal == $view){return 0;}else{$config['view'] = $tanggal;if( PHP_OS_FAMILY == "Linux" ){system("termux-open-url ".$youtube);}else{system("start ".$youtube);}file_put_contents(self::$configFile,json_encode($config,JSON_PRETTY_PRINT));}}
@@ -245,13 +220,9 @@ class Captcha {
 }
 
 class Iewil {
-	
 	protected $url;
-	protected $apikey;
-	
-	function __construct($apikey){
-		$this->url = "https://api-iewil.my.id/";
-		$this->apikey = $apikey;
+	function __construct(){
+		$this->url = "https://iewilbot.my.id/res.php";
 	}
 	private function requests($postParameter){
 		$ch = curl_init($this->url);
@@ -286,20 +257,25 @@ class Iewil {
 			print "\r                                   \r";
 		}
 	}
+	public function IconCoordiant($base64Img){
+		$postParameter = http_build_query([
+			"img"		=> $base64Img,
+			"method"	=> "icon_coordinat"
+		]);
+		return $this->getResult($postParameter);
+	}
 	public function Turnstile( $sitekey, $pageurl){
 		$postParameter = http_build_query([
 			"pageurl"	=> $pageurl,
 			"sitekey"	=> $sitekey,
-			"method"	=> "turnstile",
-			"apikey"	=> $this->apikey
+			"method"	=> "turnstile"
 		]);
 		return $this->getResult($postParameter);
 	}
 	public function gp($src){
 		$postParameter = http_build_query([
 			"main"		=> base64_encode($src),
-			"method"	=> "gp",
-			"apikey"	=> $this->apikey
+			"method"	=> "gp"
 		]);
 		return $this->getResult($postParameter);
 	}
@@ -309,14 +285,12 @@ class Iewil {
 			"signature"	=> $signature,
 			"salt"		=> $salt,
 			"challenge"	=> $challenge,
-			"method"	=> "altcha",
-			"apikey"	=> $this->apikey
+			"method"	=> "altcha"
 		]);
 		return $this->getResult($postParameter);
 	}
 	
 	public function Antibot($source){
-		$data["apikey"] = $this->apikey;
 		$data["method"] = "antibot";
 		
 		$main = explode('"',explode('src="',explode('Bot links',$source)[1])[1])[0];
@@ -344,11 +318,11 @@ class Iewil {
 			return " ".str_replace(","," ",$cap);
 		}
 	}
+	
 }
 class FreeCaptcha {
-	static function Icon($header){
-		$data["apikey"] = "iewil";
-		$data["methode"] = "icon";
+	static function Icon_hash($header){
+		$data["methode"] = "icon_hash";
 		$head = array_merge($header, ["X-Requested-With: XMLHttpRequest"]);
 		$getCap = json_decode(Requests::post(host.'system/libs/captcha/request.php',$head,"cID=0&rT=1&tM=light")[1],1);
 		
