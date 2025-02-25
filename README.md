@@ -85,3 +85,82 @@ Line 51 - 69
 	print Display::Isi($msg);
 	// $msg = nama file
 	```
+# Functions
+- Fungsi statik
+- configFile = config.json
+- Isi Fungsi
+  - Cooldown / Timer
+    ```php
+    Functions::Tmr($tmr);
+    // $tmr = waktu detik
+    ```
+  - setConfig
+    ```php
+    Functions::setConfig($key);
+    // $key = idetitas yang mau di simpan
+    ```
+  - removeConfig
+    ```php
+    Functions::removeConfig($key);
+     // $key = idetitas yang mau di hapus
+    ```
+  - view
+    ```php
+    Functions::view($youtube);
+    // $youtube = link youtube
+    ```
+  - HiddenConfig
+    ```php
+    Functions::HiddenConfig($key, $data);
+    // $key = identitas data
+    // $data = isi data
+    ```
+  - temporary
+    ```php
+    Functions::temporary($newdata, $data=0);
+    // $newdata = 
+    // $data =
+    // biasanya untuk menyimpan nama coin agar tidak terulang jika saldo dev habis
+    ```
+  - cfDecodeEmail
+    ```php
+    Functions::cfDecodeEmail($encodedString);
+    // $encodedString = string cf email yang mau di encode
+    ```
+  - getConfig
+    ```php
+    Functions::getConfig($key);
+    // $key = idetitas yang mau di lihat, pastikan sudah di simpan sebelumnya
+    ```
+# HtmlScrap
+- Fungsi Publik
+```php
+// devinisikan fungsi publik dengan variable sebelum memanggil fungsi di dalamnya
+$htmlscrap = new HtmlScrap();
+```
+- Isi Fungsi
+  - Result
+  ```php
+  $htmlscrap->Result($html, $form = 1);
+  // $html = body html sumber
+  // $form = data yang mau di ambil dari form ke berapa, default form 1 karena sebagian besar menggunakan 1 form dalam 1 halaman
+  ```
+# Captcha
+- Fungsi Publik
+- Membutuhkan Class Functions & class Display
+```php
+// devinisikan fungsi publik dengan variable sebelum memanggil fungsi di dalamnya
+$captcha = new Captcha();
+```
+- 2 Captcha solver
+  - Multibot
+  - Xevil
+- Isi Fungsi
+  - GetBalance
+  - RecaptchaV2
+  - Hcaptcha
+  - Turnstile
+  - Authkong
+  - Ocr
+  - AntiBot
+  - Teaserfast
