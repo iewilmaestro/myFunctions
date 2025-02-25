@@ -4,7 +4,7 @@
 # Warna dan Perlengkapan
 Line 6 - 49
 
-# List Youtube auto view
+# List Youtube view
 Line 51 - 69
 
 # Requests
