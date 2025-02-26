@@ -1,6 +1,6 @@
 <?php
 
-const class_version = "1.1.6";
+const class_version = "1.1.7";
 
 // Warna teks
 const n = "\n";          // Baris baru
@@ -318,22 +318,25 @@ class Iewil {
 			return " ".str_replace(","," ",$cap);
 		}
 	}
-	
 }
 class FreeCaptcha {
 	static function Icon_hash($header){
-		$data["methode"] = "icon_hash";
+		$url = host.'system/libs/captcha/request.php';
+		$data["method"] = "icon_hash";
 		$head = array_merge($header, ["X-Requested-With: XMLHttpRequest"]);
-		$getCap = json_decode(Requests::post(host.'system/libs/captcha/request.php',$head,"cID=0&rT=1&tM=light")[1],1);
-		
+		$getCap = json_decode(Requests::post($url,$head,"cID=0&rT=1&tM=light")[1],1);
+		if(!$getCap){
+			$url = host.'src/captcha-request.php';
+			$getCap = json_decode(Requests::post($url,$head,"cID=0&rT=1&tM=light")[1],1);
+		}
 		$head2 = array_merge($header, ["accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8"]);
 		foreach($getCap as $c){
-			$data[$c] = base64_encode(Requests::get(host.'system/libs/captcha/request.php?cid=0&hash='.$c, $head2)[1]);
+			$data[$c] = base64_encode(Requests::get($url.'?cid=0&hash='.$c, $head2)[1]);
 		}
 		$data = http_build_query($data);
-		$cap = json_decode(Requests::post("https://iewilbot.my.id/res.php",0,$data)[1],1);
+		$cap = json_decode(Requests::post("https://iewilbot.my.id/res.php","",$data)[1],1);
 		if(!$cap['status'])return 0;
-		Requests::postXskip(host.'system/libs/captcha/request.php',$head,"cID=0&pC=".$cap['result']."&rT=2");
+		Requests::postXskip($url,$head,"cID=0&pC=".$cap['result']."&rT=2");
 		return $cap['result'];
 	}
 }
